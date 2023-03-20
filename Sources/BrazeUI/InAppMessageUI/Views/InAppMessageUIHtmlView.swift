@@ -324,8 +324,7 @@ extension BrazeInAppMessageUI.HtmlView: WKNavigationDelegate {
     }
 
     let (clickAction, buttonId) = queryHandler.process(url: url)
-    process(clickAction: clickAction, buttonId: buttonId)
-    dismiss()
+    if process(clickAction: clickAction, buttonId: buttonId) { dismiss() }
   }
 
   public func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {

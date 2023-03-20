@@ -133,9 +133,9 @@ extension InAppMessageView {
   /// - Parameters:
   ///   - clickAction: The click action to process.
   ///   - buttonId: An optional button identifier.
-  public func process(clickAction: Braze.InAppMessage.ClickAction, buttonId: String? = nil) {
+  public func process(clickAction: Braze.InAppMessage.ClickAction, buttonId: String? = nil) -> Bool {
     guard let ui = controller?.ui, let message = controller?.message else {
-      return
+      return false
     }
 
     let process =
@@ -147,13 +147,14 @@ extension InAppMessageView {
         view: self
       ) ?? true
 
-    guard process else { return }
+    guard process else { return false }
     guard let context = message.context else {
       logError(.noContextProcessClickAction)
-      return
+      return false
     }
+      if process { context.processClickAction(clickAction)}
 
-    context.processClickAction(clickAction)
+      return process
   }
 
   public func logError(_ error: BrazeInAppMessageUI.Error) {
