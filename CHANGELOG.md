@@ -1,3 +1,60 @@
+## 5.11.2
+
+##### Fixed
+- Fixes a crash occurring when the SDK is configured with a flush interval of `0` and network connectivity is poor.
+
+## 5.11.1
+
+##### Fixed
+- Fixes an issue preventing the correct calculation of the delay when retrying failed requests. This led to a more aggressive retry schedule than intended.
+- Improves the performance of Live Activity tracking by de-duping push token tag requests.
+- Fixes an issue in `logClick(using:)` where it would incorrectly open the `url` field in addition to logging a click for metrics. It now only logs a click for metrics.
+  - This applies to the associated APIs for content cards, in-app messages, and news feed cards.
+  - It is still recommended to use the associated `Context` object to log interactions instead of these APIs.
+
+##### Added
+- Adds [`BrazeKit.overrideResourcesBundle`] and [`BrazeUI.overrideResourcesBundle`] to allow for custom resource bundles to be used by the SDK.
+  - This feature is useful when your setup prevents you from using the default resource bundle (e.g. Tuist).
+
+[`BrazeKit.overrideResourcesBundle`]: https://braze-inc.github.io/braze-swift-sdk/documentation/brazekit/overrideresourcebundle
+[`BrazeUI.overrideResourcesBundle`]: https://braze-inc.github.io/braze-swift-sdk/documentation/brazeui/overrideresourcebundle/
+
+## 5.11.0
+
+##### Added
+- Adds support for [Live Activities](https://developer.apple.com/documentation/activitykit/displaying-live-data-with-live-activities) via the `liveActivities` module on the Braze instance.
+  - This feature provides the following new methods for tracking and managing Live Activities with the Braze push server:
+    - `launchActivity(pushTokenTag:activity:)`
+    - `resumeActivities(ofType:)`
+  - This feature requires iOS 16.1 and up.
+  - To learn how to integrate this feature, refer to the [setup tutorial](https://braze-inc.github.io/braze-swift-sdk/tutorials/braze/b4-live-activities/).
+- Adds logic to re-synchronize Content Cards on SDK version changes.
+- Adds provisional support for Xcode 14.3 Beta via the [`braze-inc/braze-swift-sdk-xcode-14-3-preview`](https://github.com/braze-inc/braze-swift-sdk-xcode-14-3-preview) repository.
+
+## 5.10.1
+
+##### Changed
+- Dynamic versions of the prebuilt xcframeworks are now available in the `braze-swift-sdk-prebuilt.zip` release artifact.
+
+## 5.10.0
+
+##### Fixed
+- Fixes an issue where test content cards were removed before their expiration date.
+- Fixes an issue in `BrazeUICompat` where the status bar appearance wasn't restored to its original state after dismissing a full in-app message.
+- Fixes an issue when decoding notification payloads where some valid boolean values weren't correctly parsed.
+
+##### Changed
+- In-app modal and full-screen messages are now rendered with `UITextView`, which better supports large amounts of text and extended UTF code points.
+
+## 5.9.1
+
+##### Fixed
+- Fixes an issue preventing local expired content cards from being removed.
+- Fixes a behavior that could lead to background tasks extending beyond the expected time limit with inconsistent network connectivity.
+
+##### Added
+- Adds `logImpression(using:)` and `logClick(buttonId:using:)` to news feed cards.
+
 ## 5.9.0
 
 ##### Breaking
@@ -62,17 +119,6 @@ To help migrate your app from the Appboy-iOS-SDK to our Swift SDK, this release 
   - Enabling this value will only affect new devices. Existing devices will use the device identifier that was previously registered.
 
 ## 5.6.4
-
-##### End of early access phase / Migration Guide / Compatibility Libraries
-
-This release marks the end of the early access phase for the Braze Swift SDK. `Appboy-iOS-SDK` is now deprecated and support will cease on <INSERT DATE HERE>.
-
-To help with your migration process, this release includes:
-- [Appboy-iOS-SDK: Migration guide]:
-  - Follow step-by-step instructions to migrate each feature to the new APIs.
-  - Includes instructions for minimal migration scenario via our compatibility libraries.
-- Compatibility libraries `BrazeKitCompat` and `BrazeUICompat`:
-  - Provides all the old APIs from `Appboy-iOS-SDK` to easily start migrating to the Swift SDK.
 
 ##### Fixed
 - Fixes an issue preventing the execution of `BrazeDelegate` methods when setting the delegate using Objective-C.
